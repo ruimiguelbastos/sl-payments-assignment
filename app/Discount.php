@@ -2,11 +2,10 @@
 
 namespace App;
 
+use App\Money\Money;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @property int $id
@@ -15,7 +14,13 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  */
 class Discount extends Model
 {
-    public function coupon(): HasOne
+
+    protected $casts = [
+        'start' => 'date',
+        'end'   => 'date',
+    ];
+
+    public function coupon(): BelongsTo
     {
         return $this->belongsTo(Coupon::class);
     }

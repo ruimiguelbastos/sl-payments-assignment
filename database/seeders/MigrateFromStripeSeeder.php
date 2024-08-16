@@ -52,7 +52,7 @@ class MigrateFromStripeSeeder extends Seeder
         foreach ($stripeCustomers as $stripeCustomer) {
             $customers[$stripeCustomer->id] = Customer::create([
                 'name'      => $stripeCustomer->name,
-                'email'     => $stripeCustomer->name,
+                'email'     => $stripeCustomer->email,
                 'stripe_id' => $stripeCustomer->id,
             ]);
         }
@@ -86,6 +86,9 @@ class MigrateFromStripeSeeder extends Seeder
             $trialEnd   = $stripeSubscription->trial_end === null
                 ? null
                 : Carbon::createFromTimestamp($stripeSubscription->trial_end);
+            $cancelAt   = $stripeSubscription->cancel_at === null
+                ? null
+                : Carbon::createFromTimestamp($stripeSubscription->cancel_at);
             
             $customerId   = $customers[$stripeSubscription->customer]->id;
             $subscription = Subscription::create([
@@ -95,6 +98,7 @@ class MigrateFromStripeSeeder extends Seeder
                 'current_period_end'   => Carbon::createFromTimestamp($stripeSubscription->current_period_end),
                 'trial_start'          => $trialStart,
                 'trial_end'            => $trialEnd,
+                'cancel_at'            => $cancelAt,
                 'currency'             => $stripeSubscription->currency,
                 'customer_id'          => $customers[$stripeSubscription->customer]->id,
                 'plan_id'              => $plan->id,

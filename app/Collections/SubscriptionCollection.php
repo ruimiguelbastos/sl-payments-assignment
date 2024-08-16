@@ -5,51 +5,58 @@ namespace App\Collections;
 use App\Product;
 use App\Subscription;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
 
 final class SubscriptionCollection
 {
-    /** @param Subscription[] $subscriptions */
+    /** @param array<int, Subscription> $subscriptions */
     private function __construct(private array $subscriptions)
     {
     }
-    
-    public static function createFromCollection(Collection $subscriptions)
+
+    public static function createFromSubscription(Subscription $subscription): self
     {
-        return new self($subscriptions->all());
+        $collection = [];
+        for ($month = 0 ; $month < 12; $month++) {
+            $collection[$month] = clone $subscription;
+        }
+
+        return new self($collection);
     }
 
-    public function withCalculatedAmountsForPeriod(Carbon $periodToCalculate): self
+    public function withCalculatedAmounts(): self
     {
         $withCalculatedAmounts = [];
         
-        foreach ($this->subscriptions as $subscription) {
+        foreach ($this->subscriptions as $month => $subscription) {
+            $periodToCalculate = Carbon::now()->addMonths($month)->endOfMonth();
             $withCalculatedAmounts[] = $subscription->calculateAmoutForPeriod($periodToCalculate);
         }
         
         return new self($withCalculatedAmounts);
     }
-    
-    /**
-     * @return Subscription[]
-     */
-    public function toArray(): array
+
+
+    public function belongsToProduct(Product $product): bool
     {
-        return $this->subscriptions;
+        return $this->subscriptions[0]->belongsToProduct($product);
     }
-    
-    public function filterByProduct(Product $product): self
+
+    public function getAllPrices(): array
     {
-        $result = [];
+        return array_map(
+            function(Subscription $subscription) { return $subscription->getCalculatedPrice()->toFloat(); },
+            $this->subscriptions
+        );
+    }
+
+    public function transform(): object
+    {
+        $prices = $this->getAllPrices();
         
-        foreach ($this->subscriptions as $subscription) {
-            if (! $subscription->belongsToProduct($product)) {
-                continue;
-            }
-            
-            $result[] = $subscription;
-        }
-        
-        return new self($result);
+        return (object) [
+            'prices'        => $prices,
+            'totalPrice'    => array_sum($prices),
+            'customerEmail' => $this->subscriptions[0]->getCustomerEmail(),
+        ];
     }
 }

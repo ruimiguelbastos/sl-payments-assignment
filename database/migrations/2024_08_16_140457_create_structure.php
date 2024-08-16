@@ -59,6 +59,7 @@ return new class extends Migration
             $table->timestamp('current_period_end');
             $table->timestamp('trial_start')->nullable();
             $table->timestamp('trial_end')->nullable();
+            $table->timestamp('cancel_at')->nullable();
             $table->enum('currency', ['usd', 'gbp', 'eur']);
             $table->foreign('customer_id')->references('id')->on('customers');
             $table->foreign('plan_id')->references('id')->on('plans');

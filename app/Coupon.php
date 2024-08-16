@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Money\Money;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -14,7 +15,7 @@ class Coupon extends Model
     public function calculateDiscountForPrice(Money $price): Money
     {
         return match(true) {
-            $this->amount_off !== null =>  $price->sub(Money::fromAmountDecimal($this->amount_off)),
+            $this->amount_off !== null =>  $price->sub(Money::fromFloat($this->amount_off)),
             $this->percent_off !== null => $price->sub($price->multiply($this->percent_off / 100)),
             default => $price,
         };

@@ -19,12 +19,12 @@ class Plan extends Model
 
     public function belongsToProduct(Product $product): bool
     {
-        return $this->product === $product;
+        return $this->product->id === $product->id;
     }
 
     public function isBeingBilledInPeriod(Carbon $periodToCalculate, int $trialMonths): bool
     {
-        //make strategy for year/month/days/weeks
+        //TODO for year/month/days/weeks
         for($i = $trialMonths ; $i < 12 ; $i += $this->interval_count) {
             if (Date::isSameMonthFromSameYear($periodToCalculate, Carbon::now()->addMonths($i))) {
                 return true;
@@ -32,10 +32,5 @@ class Plan extends Model
         }
 
         return false;
-    }
-
-    public function getProductName(): string
-    {
-        return $this->product->name;
     }
 }

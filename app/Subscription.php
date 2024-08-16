@@ -2,10 +2,12 @@
 
 namespace App;
 
+use App\Money\Money;
 use App\Util\Date;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @property int $id
@@ -35,9 +37,9 @@ class Subscription extends Model
         return $this->belongsTo(Plan::class);
     }
 
-    public function discount(): BelongsTo
+    public function discount(): HasOne
     {
-        return  $this->belongsTo(Discount::class);
+        return $this->hasOne(Discount::class);
     }
 
     public function getCalculatedPrice(): Money
@@ -50,13 +52,9 @@ class Subscription extends Model
         return $this->plan->belongsToProduct($product);
     }
 
-    public function transformWithCalculatedPrice(): array
+    public function getCustomerEmail(): string
     {
-        return [
-            'calculatedPrice' => $this->calculatedPrice->toFloat(),
-            'customerEmail'   => $this->customer->email,
-            'product'         => $this->plan->getProductName(),
-        ];
+        return $this->customer->email;
     }
 
     public function calculateAmoutForPeriod(Carbon $periodToCalculate): self

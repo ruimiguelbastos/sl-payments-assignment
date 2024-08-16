@@ -4,21 +4,38 @@ namespace App\Calculators;
 
 use App\Collections\SubscriptionCollection;
 use App\Collections\SubscriptionCollectionAggregator;
-use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 
 final class SubscriptionCalculator
 {
     public function calculateSubscriptionPaymentsForTheNextYear(
-        SubscriptionCollection $collection
-    ): SubscriptionCollectionAggregator {
-        $result = [];
-        for ($month = 0 ; $month < 12; $month++) {
-            $periodToCalculate = Carbon::now()->startOfMonth()->addMonths($month)->endOfMonth();
-            $calculated        = $collection->withCalculatedAmountsForPeriod($periodToCalculate);
+        Collection $collection
+    ): SubscriptionCollectionAggregator
+    {
+        $subscriptionCollections = $this->prepareCollections($collection);
+        $result                  = [];
 
-            $result[$month] = $calculated;
+        foreach ($subscriptionCollections as $stripeId => $collection) {
+            $calculated        = $collection->withCalculatedAmounts();
+            $result[$stripeId] = $calculated;
         }
 
         return new SubscriptionCollectionAggregator($result);
+    }
+
+    /**
+     * @return array<string, SubscriptionCollection>
+     */
+    private function prepareCollections(Collection $collection): array
+    {
+        $subscriptionCollections = [];
+
+        foreach ($collection as $subscription) {
+            $subscriptionCollections[$subscription->stripe_id] = SubscriptionCollection::createFromSubscription(
+                $subscription
+            );
+        }
+
+        return $subscriptionCollections;
     }
 }

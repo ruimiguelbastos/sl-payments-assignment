@@ -3,15 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Calculators\SubscriptionCalculator;
-use App\Collections\SubscriptionCollection;
 use App\Product;
 use App\Subscription;
+use App\Transformers\ProductSubscriptionsTransformer;
 use Illuminate\Http\Request;
 
 class ProductsSubscriptionsGetHandler
 {
     public function __construct(
         private SubscriptionCalculator $subscriptionCalculator,
+        private ProductSubscriptionsTransformer $transformer,
     )
     {
     }
@@ -20,11 +21,13 @@ class ProductsSubscriptionsGetHandler
      */
     public function __invoke(Request $request)
     {
-        $subscriptions = SubscriptionCollection::createFromCollection(Subscription::all());
+        $subscriptions = Subscription::all();
 
         $calculatedSubscriptions = $this->subscriptionCalculator
             ->calculateSubscriptionPaymentsForTheNextYear($subscriptions);
 
-        //TODO Transform
+        $result = $this->transformer->transform(Product::all(), $calculatedSubscriptions);
+
+        return view("product-subscriptions", ['result' => $result]);
     }
 }

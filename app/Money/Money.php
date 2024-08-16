@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Money;
 
 use function round;
 
@@ -42,16 +42,5 @@ final class Money
     public function multiply(float $factor): Money
     {
         return new self((int) round((float) $this->integerValue * $factor));
-    }
-
-    /** @psalm-pure */
-    public static function sum(self ...$addends): self
-    {
-        $sum = 0;
-        foreach ($addends as $money) {
-            $sum += $money->integerValue;
-        }
-
-        return new self($sum);
     }
 }
