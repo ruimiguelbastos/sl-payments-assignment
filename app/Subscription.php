@@ -57,14 +57,15 @@ class Subscription extends Model
         return $this->customer->email;
     }
 
-    public function calculateAmoutForPeriod(Carbon $periodToCalculate): self
+    public function calculateAmoutForPeriod(Carbon $periodToCalculate): Money
     {
         $this->calculatedPrice = Money::fromFloat($this->plan->amount);
 
         return $this->withCalculatedTrialPeriod($periodToCalculate)
             ->withCalculatedCancelation($periodToCalculate)
             ->withCalculatedMonthBillingWithoutDiscounts($periodToCalculate)
-            ->withCalculatedDiscounts($periodToCalculate);
+            ->withCalculatedDiscounts($periodToCalculate)
+            ->calculatedPrice;
     }
 
     private function withCalculatedTrialPeriod(Carbon $periodToCalculate): self

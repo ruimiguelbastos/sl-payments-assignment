@@ -4,15 +4,15 @@ namespace App\Collections;
 
 use App\Product;
 
-final class SubscriptionCollectionAggregator
+final class SubscriptionCalculationsCollectionAggregator
 
 {
-    /** @param array<string, SubscriptionCollection> $collectionsAggregated **/
+    /** @param array<string, SubscriptionCalculationsCollection> $collectionsAggregated **/
     public function __construct(private array $collectionsAggregated)
     {
     }
 
-    public function filterForProduct(Product $product): SubscriptionCollectionAggregator
+    public function filterForProduct(Product $product): SubscriptionCalculationsCollectionAggregator
     {
         $filtered = [];
 

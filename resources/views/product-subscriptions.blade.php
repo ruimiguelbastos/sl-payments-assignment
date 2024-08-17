@@ -10,7 +10,7 @@
                 </th>
                 @for($month = 0 ; $month < 12 ; $month++)
                     <th>
-                        {{ $now->addMonth($month)->endOfMonth()->format('Y-m-d'); }}
+                        {{ $now->clone()->addMonth($month)->endOfMonth()->format('Y-m-d'); }}
                     </th>
                 @endfor
                 <th>

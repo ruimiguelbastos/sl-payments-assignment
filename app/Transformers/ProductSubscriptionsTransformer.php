@@ -3,13 +3,13 @@
 namespace App\Transformers;
 
 use App\Aggregators\ProductSubscriptionAggregator;
-use App\Collections\SubscriptionCollectionAggregator;
+use App\Collections\SubscriptionCalculationsCollectionAggregator;
 use Illuminate\Database\Eloquent\Collection;
 
 final class ProductSubscriptionsTransformer
 {    public function transform(
-        Collection $products,
-        SubscriptionCollectionAggregator $calculatedSubscriptions
+    Collection $products,
+    SubscriptionCalculationsCollectionAggregator $calculatedSubscriptions
     ): array {
         $transformed = [];
         
