@@ -19,8 +19,8 @@ Steps to run the code:
 
 I learned a lot about the Stripe API with this assignment. And I know the end result isn't the expected one. And even if I'm not selected, I look forward to understand what I could have done differently.
 Hope to hear from you soon.
+
 ---
-<br />
 
 Thank you for choosing to invest your time in this assignment.  We recognize it’s difficult to find the time to complete a coding assignment, and we value your time and investment in this process with us.
 # Streamlabs Senior Payments Assignment

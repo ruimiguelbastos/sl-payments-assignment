@@ -5,6 +5,7 @@ namespace App;
 use App\Money\Money;
 use App\Util\Date;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -18,6 +19,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  */
 class Subscription extends Model
 {
+    use HasFactory;
+
     protected $casts = [
         'current_period_end' => 'date',
         'trial_start'        => 'date',

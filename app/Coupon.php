@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Money\Money;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -12,6 +13,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Coupon extends Model
 {
+    use HasFactory;
+
     public function calculateDiscountForPrice(Money $price): Money
     {
         if ($price->isZero()) {
