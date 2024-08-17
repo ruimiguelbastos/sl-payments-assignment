@@ -1,5 +1,26 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://cdn.streamlabs.com/static/imgs/identity/streamlabs-logo-thumb.png" alt="Streamlabs Kevin"></a></p>
+<img src="result.png" alt="Result">
 
+This is the final result. The scheduling wasn't working due to currency differences between prices and customer. I thought about converting and creating a new price but I'm not sure that's correct either. I look forward to discuss it with you.
+
+I also know that my approach to this assignment is not the best in terms of having updated data, as you need to restart the app data. But it did make it easier in terms of coding.
+I look forward to talk about it too.
+
+Run the code after populating Stripe with the fixture's data
+
+Steps to run the code:
+
+  - Add the `STRIPE_SECRET_KEY` on the env file.
+  - Run `vendor/bin/sail artisan migrate`.
+  - Run `vendor/bin/sail artisan app:create-customer-and-subscribe` to create a customer and assign them to a subscription with the data requested.
+  - Move the test clock to anytime you want.
+  - Run `vendor/bin/sail artisan db:seed`
+  - Use the endpoint `/products-subscriptions` to display the result
+  - The result is displayed.
+
+I learned a lot about the Stripe API with this assignment. And I know the end result isn't the expected one. And even if I'm not selected, I look forward to understand what I could have done differently.
+Hope to hear from you soon.
+---
+<br />
 
 Thank you for choosing to invest your time in this assignment.  We recognize it’s difficult to find the time to complete a coding assignment, and we value your time and investment in this process with us.
 # Streamlabs Senior Payments Assignment
