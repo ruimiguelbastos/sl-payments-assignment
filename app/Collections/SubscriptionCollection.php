@@ -23,12 +23,12 @@ final class SubscriptionCollection
         return new self($collection);
     }
 
-    public function withCalculatedAmounts(): self
+    public function withCalculatedAmounts(Carbon $now): self
     {
         $withCalculatedAmounts = [];
         
         foreach ($this->subscriptions as $month => $subscription) {
-            $periodToCalculate = Carbon::now()->addMonths($month)->endOfMonth();
+            $periodToCalculate       = $now->clone()->addMonths($month)->endOfMonth();
             $withCalculatedAmounts[] = $subscription->calculateAmoutForPeriod($periodToCalculate);
         }
         

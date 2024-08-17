@@ -10,7 +10,7 @@
                 </th>
                 @for($month = 0 ; $month < 12 ; $month++)
                     <th>
-                        {{ \Carbon\Carbon::now()->addMonth($month)->endOfMonth()->format('Y-m-d'); }}
+                        {{ $now->addMonth($month)->endOfMonth()->format('Y-m-d'); }}
                     </th>
                 @endfor
                 <th>
@@ -18,7 +18,7 @@
                 </th>
             </tr>
         </thead>
-    
+
         <tbody>
             @foreach($product->subscriptions->data as $subscription)
                 <tr>
@@ -36,10 +36,10 @@
                     <td>
                         {{ $subscription->totalPrice }}
                     </td>
-                </tr>    
+                </tr>
             @endforeach
         </tbody>
-        
+
         <tfoot>
             <tr>
                 <td>Totals</td>

@@ -14,6 +14,10 @@ class Coupon extends Model
 {
     public function calculateDiscountForPrice(Money $price): Money
     {
+        if ($price->isZero()) {
+            return $price;
+        }
+
         return match(true) {
             $this->amount_off !== null =>  $price->sub(Money::fromFloat($this->amount_off)),
             $this->percent_off !== null => $price->sub($price->multiply($this->percent_off / 100)),

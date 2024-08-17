@@ -5,6 +5,7 @@ namespace App\Clients;
 use Stripe\Collection as StripeCollection;
 use Stripe\Exception\ApiErrorException;
 use Stripe\StripeClient;
+use Stripe\TestHelpers\TestClock;
 
 final class StripeBaseClient
 {
@@ -36,4 +37,13 @@ final class StripeBaseClient
     {
         return $this->client->customers->all(['test_clock' => env('STRIPE_TEST_CLOCK')]);
     }
+
+    /**
+     * @throws ApiErrorException
+     */
+    public function getTestClock(): TestClock
+    {
+        return $this->client->testHelpers->testClocks->retrieve(env('STRIPE_TEST_CLOCK'));
+    }
+
 }

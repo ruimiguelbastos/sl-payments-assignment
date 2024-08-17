@@ -12,13 +12,11 @@ final class Money
     {
     }
 
-    /** @psalm-pure */
     public static function zero(): self
     {
         return new self(0);
     }
 
-    /** @psalm-pure */
     public static function fromFloat(float $value): self
     {
         return new self($value * self::PRECISION);
@@ -42,5 +40,10 @@ final class Money
     public function multiply(float $factor): Money
     {
         return new self((int) round((float) $this->integerValue * $factor));
+    }
+
+    public function isZero(): bool
+    {
+        return $this->integerValue === 0;
     }
 }
