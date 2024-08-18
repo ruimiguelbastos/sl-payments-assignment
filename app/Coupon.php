@@ -21,10 +21,12 @@ class Coupon extends Model
             return $price;
         }
 
-        return match(true) {
+        $newPrice = match(true) {
             $this->amount_off !== null =>  $price->sub(Money::fromFloat($this->amount_off)),
             $this->percent_off !== null => $price->sub($price->multiply($this->percent_off / 100)),
             default => $price,
         };
+
+        return Money::max(Money::zero(), $newPrice);
     }
 }

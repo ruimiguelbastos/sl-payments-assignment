@@ -22,6 +22,11 @@ final class Money
         return new self($value * self::PRECISION);
     }
 
+    public static function max(Money $moneyA, Money $moneyB): self
+    {
+        return new self(max($moneyA->integerValue, $moneyB->integerValue));
+    }
+
     public function toFloat(): float
     {
         return $this->integerValue / self::PRECISION;
